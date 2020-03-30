@@ -37,6 +37,8 @@ public class ContactsFragment extends Fragment {
     ListView contactsChooser;
     ContactsListAdapter contactsListAdapter;
 
+    //In this method we add adapter to listview for contacts.
+    //We get contacts from ContactsViewModel
     public void contacts(){
 
         contactsChooser = (ListView) view.findViewById(R.id.contactChooser);

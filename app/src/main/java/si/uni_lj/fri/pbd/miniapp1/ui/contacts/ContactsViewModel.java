@@ -8,7 +8,9 @@ import si.uni_lj.fri.pbd.miniapp1.contacts.Contact;
 
 public class ContactsViewModel extends ViewModel {
 
+    //List of all contacts.
     private LinkedList<Contact> contactHolder;
+    //List of checked contacts (chosen contacts).
     private LinkedList<Contact> checkedContacts;
 
     public LinkedList<Contact> getCheckedContacts() {

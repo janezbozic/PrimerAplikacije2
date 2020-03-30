@@ -29,9 +29,11 @@ public class MessageFragment extends Fragment {
 
         contactsViewModel = new ViewModelProvider(requireActivity()).get(ContactsViewModel.class);
 
+        //We find buttons from fragment_message.xml
         Button buttonEmail = root.findViewById(R.id.button_email);
         Button buttonMMS = root.findViewById(R.id.button_mms);
 
+        //Set click listeners to both buttons. In case we didn't choose any contact, we send Toast message.
         buttonEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +57,7 @@ public class MessageFragment extends Fragment {
         return root;
     }
 
+    //We open an email application through intent and set all fields. In the end we clear the list of checked (chosen) contacts.
     private void sendEmail(LinkedList<Contact> checkedContacts){
 
         String s = "";
@@ -74,6 +77,7 @@ public class MessageFragment extends Fragment {
 
     }
 
+    //We open sms/mms application through intent and set all fields. In the end we clear the list of checked (chosen) contacts.
     private void sendMMS(LinkedList<Contact> checkedContacts) {
 
         String s = "";

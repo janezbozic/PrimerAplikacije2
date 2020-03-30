@@ -68,9 +68,11 @@ public class MainActivity extends AppCompatActivity {
 
         contactsViewModel = new ViewModelProvider(this).get(ContactsViewModel.class);
 
+        //We check if the list of contacts already exists, otherwise we check permissions, create it and fill with contacts.
         if (contactsViewModel.getContactHolder() == null)
             loadContacts();
 
+        //We call method, that handles profile image of a user.
         processImage();
 
     }
@@ -98,12 +100,14 @@ public class MainActivity extends AppCompatActivity {
 
         String committedImage = sharedPreferences.getString(savedPhotoName, null);
 
+        //If user previous time already saved an image, we set it.
         if(committedImage != null) {
             profileImage.setBackground(null);
             byte[] imageAsBytes = Base64.decode(committedImage.getBytes(), Base64.DEFAULT);
             profileImage.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
         }
 
+        //We add click listener to image, so if we press it, we open camera.
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Here we get result of activity and check if it is for camera (Image capture) and we set the image and save it to shared preferences.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -138,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //In case we don't already have permission, we request it.
     public void loadContacts (){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
@@ -147,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Here we catch result of permission request.
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -162,6 +169,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //In this method we fetch contacts. First we check if the contact has number, then we iterate through that contact for all numbers and emails.
+    //Next to contact name, there will also be displayed type of contact (home, work, ...) -> see toString method in Contact class,
+    //because one person can have more than one phone number or email address.
     private LinkedList<Contact> findContacts() {
 
         LinkedList<Contact> contactHolder = new LinkedList<>();

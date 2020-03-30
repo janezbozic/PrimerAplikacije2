@@ -31,6 +31,8 @@ public class ContactsListAdapter extends BaseAdapter {
 
         contactsViewModel = new ViewModelProvider((MainActivity)context).get(ContactsViewModel.class);
 
+        //We check in ContactsViewModel if LinkedList for checked contacts already exists.
+        //Otherwise we create it and set it.
         if (contactsViewModel.getCheckedContacts() == null) {
             this.selectedContacts = new LinkedList<>();
             contactsViewModel.setCheckedContacts(this.selectedContacts);
@@ -41,6 +43,7 @@ public class ContactsListAdapter extends BaseAdapter {
 
     }
 
+    //This method gets contact from it's id.
     public Contact getContact(int id, LinkedList<Contact> c){
 
         for(int i=0;i<c.size();i++){
@@ -70,11 +73,13 @@ public class ContactsListAdapter extends BaseAdapter {
         return Long.parseLong(this.getItem(position).id);
     }
 
+    //Get view is activated for every element in a listview (for a contact in linkedlist).
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
         CheckBoxViewHolder viewHolder;
-
+        //ViewHolder is used, so the app is little bit more responsive
+        //Because it doesn't have to serach for a view contact_check_box every time from layout.
         if(view==null){
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             view = inflater.inflate(R.layout.contact_check_box, null);
@@ -85,10 +90,12 @@ public class ContactsListAdapter extends BaseAdapter {
             viewHolder = (CheckBoxViewHolder) view.getTag();
         }
 
+        //We add data to checkBox (displayed contact)
         viewHolder.checkBoxContact.setText(this.contacts.get(position).toString());
         viewHolder.checkBoxContact.setId(Integer.parseInt(this.contacts.get(position).id));
         viewHolder.checkBoxContact.setChecked(isChecked(contacts.get(position)));
 
+        //We add click listener to checkbox, so we add contact to list of checked contacts.
         viewHolder.checkBoxContact.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -104,6 +111,7 @@ public class ContactsListAdapter extends BaseAdapter {
         return view;
     }
 
+    //We just check if contact was checked (if it is in a linkedlist of selected contacts).
     public boolean isChecked(Contact contact)
     {
         if(getContact(Integer.parseInt(contact.id), selectedContacts)!=null)
@@ -111,6 +119,7 @@ public class ContactsListAdapter extends BaseAdapter {
         return false;
     }
 
+    //Class of ViewHolder for checkbox.
     public static class CheckBoxViewHolder{
         CheckBox checkBoxContact;
     }
